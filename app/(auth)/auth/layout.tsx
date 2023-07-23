@@ -1,4 +1,4 @@
-'use client';
+
 
 import { NextAuthProvider } from '@/app/provider';
 import '../../globals.css'

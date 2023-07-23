@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { QrReader } from "react-qr-reader";
+// import { QrReader } from "react-qr-reader";
 
 export default function QRScanner(props:any) {
   const [pl, setPl] = useState('No result');
 
   return (
     <>
-      <QrReader
+      <h1>should be qr reader here</h1>
+      {/* <QrReader
         constraints={{ facingMode: 'user' }}
         onResult={(result, error) => {
           if (!!result) {
@@ -20,7 +21,7 @@ export default function QRScanner(props:any) {
           }
         }}
         containerStyle={{ padding:'0px!important' }}
-      />
+      /> */}
       
     </>
    

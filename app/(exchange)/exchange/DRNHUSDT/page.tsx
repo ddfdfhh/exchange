@@ -36,8 +36,7 @@ interface SocketResponse {
 }
 export default function Exchange() {
   const { status, data: session } = useSession()
-  const binance_url = 'https://testnet.binance.vision/api/v3';
-  const binance_stream = 'wss://testnet.binance.vision/ws';
+  
   const [wsInstance, setWsInstance] = useState<any>(null);
   const [response, setResponse] = useState<SocketResponse | null>(null);
  const router = useRouter();
@@ -145,17 +144,7 @@ export default function Exchange() {
         }).catch(err => {
           console.log('error in feetchign orders', err)
         })
-      MakePostRequest({ network, coin: main_currency }, 'binance/fetchBalanceFromTable', authToken)
-        .then(resp => {
-          let wallet = resp.data.data
-          setMainCoinBalance(wallet['main_balance'])
-          setUsdtBalance(wallet['usdt_balance'])
-
-        }).catch(err => {
-          console.log('balacne error', err)
-          setMainCoinBalance(0)
-          setUsdtBalance(0)
-        })
+     
     }
    
 

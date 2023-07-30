@@ -78,7 +78,7 @@ export default function Register() {
            
         }
         setLoading(true)
-        MakePostRequest(post, 'auth/register',undefined).then(async(resp) => { 
+        MakePostRequest(post, '/auth/register',undefined).then(async(resp) => { 
             const res = await resp.json();
             console.log('res',res)
             if (res.success) { 

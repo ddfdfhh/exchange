@@ -6,7 +6,7 @@ import Trade from "@/app/components/trade";
 import { useEffect, useState } from "react";
 const crypto = require('crypto');
 import axios from 'axios'
-import socketIOClient, { io } from "socket.io-client";
+import socketIOClient from "socket.io-client";
 import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { MakeGetRequestNoQuery, MakeGetRequestRemoteQuery, MakeGetRequestWithQuery, MakePostRequest } from "@/app/util/make_post_request";
@@ -22,7 +22,7 @@ import { useRouter } from "next/navigation";
 let ws: WebSocket;
 
 let authToken: string | undefined
-const ENDPOINT ='http://wuatex.co';
+const ENDPOINT ='https://wuatex.co/';
 let socket: any;
 interface Com {
   price: number, size: number, volume: number
@@ -36,7 +36,8 @@ interface SocketResponse {
 }
 export default function Exchange() {
   const { status, data: session } = useSession()
-  
+  const binance_url = 'https://testnet.binance.vision/api/v3';
+  const binance_stream = 'wss://testnet.binance.vision/ws';
   const [wsInstance, setWsInstance] = useState<any>(null);
   const [response, setResponse] = useState<SocketResponse | null>(null);
  const router = useRouter();
@@ -96,10 +97,7 @@ export default function Exchange() {
     network = 'BEP20';
   useEffect(() => {
 
-    socket = io(ENDPOINT, {
-      secure: true,
-      path:'/pack/socket.io'
-    });
+    socket = socketIOClient(ENDPOINT);
     socket.emit('get_data', { symbol: 'DRNHUSDT' });
     socket.on("message", (data: any) => {
       console.log('mega from sok', JSON.parse(data))
@@ -144,7 +142,17 @@ export default function Exchange() {
         }).catch(err => {
           console.log('error in feetchign orders', err)
         })
-     
+      MakePostRequest({ network, coin: main_currency }, 'binance/fetchBalanceFromTable', authToken)
+        .then(resp => {
+          let wallet = resp.data.data
+          setMainCoinBalance(wallet['main_balance'])
+          setUsdtBalance(wallet['usdt_balance'])
+
+        }).catch(err => {
+          console.log('balacne error', err)
+          setMainCoinBalance(0)
+          setUsdtBalance(0)
+        })
     }
    
 
@@ -437,7 +445,7 @@ export default function Exchange() {
         <div className="card">
           <div className="card-body">
             <div className="row">
-              <div className="col-md-2 text-center  pt-3" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#00BCD4', color: 'white', fontSize: '43px' }}>
+              <div className="col-md-2 text-center  pt-3">
 
                 <h5>{main_currency}/USDT</h5></div>
               <div className="col-md-10 pt-2">
@@ -470,8 +478,8 @@ export default function Exchange() {
 
                 {/* TradingView Widget BEGIN */}
                 <div className="tradingview-widget-container">
-                  <Indicator coin='DRNH' />
-                </div>
+                  <Indicator coin="DRNH"/>
+                </div> 
                 {/* TradingView Widget END */}
               </div>
             </div>

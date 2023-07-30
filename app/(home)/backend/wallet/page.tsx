@@ -45,7 +45,7 @@ export default function Wallet() {
       
        }
        else if (status == 'unauthenticated') {
-         return redirect('auth/login')
+         return redirect('/auth/login')
       
        }
           

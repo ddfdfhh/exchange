@@ -4,12 +4,12 @@ export function DrnhTicker(props: any) {
     const response = props.ticker
 
     return (
-        <div className="d-flex">
+        <div className="d-flex flex-wrap">
 
             <div className="d-flex flex-column mx-4 flex-fill">
                     <>
-                            <h5 className="fw-bold">{formatDecimal(response?.last_trade?.price)}&nbsp;</h5>
-                            <h6>${formatDecimal(response?.last_trade?.price)} &nbsp;</h6>
+                            <h5 className="fw-bold">{formatDecimal(response?.last_trade?.price,8)}&nbsp;</h5>
+                            <h6>${formatDecimal(response?.last_trade?.price,8)} &nbsp;</h6>
                         </>
 
                 

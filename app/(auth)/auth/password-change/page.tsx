@@ -53,17 +53,8 @@ export default function ChangePassword() {
                         </div>
                         <div className="col-lg-6 d-none d-lg-flex justify-content-center align-items-center auth-h100">
                             <div className="qr-block text-center">
-                                <img
-                                    src="../assets/images/qr-code.png"
-                                    alt="#"
-                                    className="img-fluid my-4"
-                                />
-                                <h4>Log in with QR code</h4>
-                                <p>
-                                    Scan this code with the{" "}
-                                    <span className="text-primary">Cryptoon mobile app</span>
-                                    <br /> to log in instantly.
-                                </p>
+                               <img src="/pl.png" className="img-fluid my-4" alt="login"  />
+
                             </div>
                         </div>
                     </div>{" "}

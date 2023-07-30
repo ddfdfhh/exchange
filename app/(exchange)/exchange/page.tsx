@@ -13,6 +13,7 @@ import { Ticker } from "@/app/components/ticker";
 import { filterOrder, formatDecimal, priceRule } from "@/app/util/helpers";
 import SuccessAlert from "@/app/components/success_alert";
 import ErrorAlert from "@/app/components/error_alert";
+import { useRouter } from "next/navigation";
 let ws: WebSocket;
 let authToken: string | undefined
 export default function Exchange() {
@@ -20,7 +21,7 @@ export default function Exchange() {
   const binance_url = 'https://testnet.binance.vision/api/v3';
   const binance_stream = 'wss://testnet.binance.vision/ws';
   const [wsInstance, setWsInstance] = useState<any>(null);
-
+  const router = useRouter();
   const [side, setSide] = useState<any>(null);
   const [mainCoinBalance, setMainCoinBalance] = useState<number|string>(0)
   const [marketPrice, setMarketPrice] = useState<any>()
@@ -113,10 +114,7 @@ export default function Exchange() {
           setUsdtBalance(0)
         })
     }
-    else if (status == 'unauthenticated') {
-      return redirect('auth/login')
-
-    }
+    
 
   }, [status, main_currency])
   useEffect(() => {
@@ -210,13 +208,13 @@ export default function Exchange() {
         setMarketPrice(formatDecimal(resp.data.lastPrice, 5))
         setPriceInputBuy(formatDecimal(resp.data.lastPrice, 5))
         setPriceInputSell(formatDecimal(resp.data.lastPrice, 5))
-        /*    ws = new WebSocket(binance_stream);
+            ws = new WebSocket(binance_stream);
             ws.onopen = function () {
               ws.send(JSON.stringify(
                 {
                   "method": "SUBSCRIBE",
                   "params": [
-                    `bnbusdt@ticker`,
+                    `btcusdt@ticker`,
     
     
                   ],
@@ -249,7 +247,7 @@ export default function Exchange() {
             ws.onclose = function () {
               console.log("Connection closed...");
             };
-    */
+    
       }).catch(err => {
         console.log('balacne error', err)
         setMainCoinBalance(0)
@@ -590,6 +588,10 @@ setErrorBuySide(undefined)
       }
     }
   }
+  function goToLogin() {
+    //alert()
+     router.push('/auth/login')
+  }
   return (
     <div className="body d-flex py-3 pt-4">
       <div className="container-xxl">
@@ -628,9 +630,9 @@ setErrorBuySide(undefined)
               <div className="card-body">
 
                 {/* TradingView Widget BEGIN */}
-                {/* <div className="tradingview-widget-container">
-                  <Indicator />
-                </div> */}
+                <div className="tradingview-widget-container">
+                  <Indicator coin='BTC' />
+                </div>
                 {/* TradingView Widget END */}
               </div>
             </div>
@@ -707,7 +709,16 @@ setErrorBuySide(undefined)
                               ? <span className="text-danger m-2">{errorBuySide}</span>
                               : <span>&nbsp;</span>
                           }
+                          {
+                            status=='unauthenticated'?
                           <button
+                             type="button" onClick={e => goToLogin()}
+                            className="btn flex-fill btn-light-success py-2 fs-5 text-uppercase px-5 w-100"
+                          >
+                            Login Or Signup
+
+                          </button>
+                          :                          <button
                             disabled={loadingBuy || (errorBuySide !== undefined && errorBuySide.length > 0)}
                             type="button" onClick={e => handleSubmit(e, 'BUY')}
                             className="btn flex-fill btn-light-success py-2 fs-5 text-uppercase px-5 w-100"
@@ -721,6 +732,7 @@ setErrorBuySide(undefined)
                             }
 
                           </button>
+                          }
                         </form>
                       </div>
                       <div className="col-lg-6">
@@ -763,6 +775,15 @@ setErrorBuySide(undefined)
                               ? <span className="text-danger m-2">{errorSellSide}</span>
                               : <span>&nbsp;</span>
                           }
+                          {
+                            status=='unauthenticated'?
+                          <button
+                             type="button" onClick={e => goToLogin()}
+                             className="btn flex-fill btn-light-danger py-2 fs-5 text-uppercase px-5 w-100"                          >
+                            Login Or Signup
+
+                          </button>
+                          : 
                           <button
                             disabled={loadingSell || (errorSellSide !== undefined && errorSellSide.length > 0)}
                             type="button" onClick={e => handleSubmit(e, 'SELL')}
@@ -775,6 +796,7 @@ setErrorBuySide(undefined)
                                 : <span> SELL {main_currency} </span>
                             }
                           </button>
+                          }
                         </form>
                       </div>
                     </div>
@@ -816,18 +838,28 @@ setErrorBuySide(undefined)
                               ? <span className="text-danger m-2">{errorBuySideMarket}</span>
                               : <span>&nbsp;</span>
                           }
-                          <button
-                            disabled={loadingBuyMarket || (errorBuySideMarket !== undefined && errorBuySideMarket.length > 0)}
-                            type="button" onClick={e => handleSubmit(e, 'BUY')}
-                            className="btn flex-fill btn-light-success py-2 fs-5 text-uppercase px-5 w-100"
-                          >                             {
-                              loadingBuyMarket ?
-                                <div className="d-flex align-items-center align-content-center ">
-                                  <span className="spinner-border spinner-border-md"></span>BUY {main_currency}
-                                </div>
-                                : <span> BUY {main_currency} </span>
-                            }
-                          </button>
+                          {
+                            status == 'unauthenticated' ?
+                              <button
+                                type="button" onClick={e => goToLogin()}
+                                 className="btn flex-fill btn-light-success py-2 fs-5 text-uppercase px-5 w-100"                        >
+                                Login Or Signup
+
+                              </button>
+                              :
+                              <button
+                                disabled={loadingBuyMarket || (errorBuySideMarket !== undefined && errorBuySideMarket.length > 0)}
+                                type="button" onClick={e => handleSubmit(e, 'BUY')}
+                                className="btn flex-fill btn-light-success py-2 fs-5 text-uppercase px-5 w-100"
+                              >                             {
+                                  loadingBuyMarket ?
+                                    <div className="d-flex align-items-center align-content-center ">
+                                      <span className="spinner-border spinner-border-md"></span>BUY {main_currency}
+                                    </div>
+                                    : <span> BUY {main_currency} </span>
+                                }
+                              </button>
+                          }
                         </form>
                       </div>
                       <div className="col-lg-6">
@@ -865,18 +897,28 @@ setErrorBuySide(undefined)
                               ? <span className="text-danger m-2">{errorSellSideMarket}</span>
                               : <span>&nbsp;</span>
                           }
-                          <button
-                            disabled={loadingSellMarket || (errorSellSideMarket !== undefined && errorSellSideMarket.length > 0)}
-                            type="button" onClick={e => handleSubmit(e, 'SELL')}
-                            className="btn flex-fill btn-light-danger py-2 fs-5 text-uppercase px-5 w-100"
-                          >                             {
-                              loadingSellMarket ?
-                                <div className="d-flex align-items-center align-content-center ">
-                                  <span className="spinner-border spinner-border-md"></span>SELL {main_currency}
-                                </div>
-                                : <span> SELL {main_currency} </span>
-                            }
-                          </button>
+                          {
+                            status == 'unauthenticated' ?
+                              <button
+                                type="button" onClick={e => goToLogin()}
+                                className="btn flex-fill btn-light-success py-2 fs-5 text-uppercase px-5 w-100"                        >
+                                Login Or Signup
+
+                              </button>
+                              :
+                              <button
+                                disabled={loadingSellMarket || (errorSellSideMarket !== undefined && errorSellSideMarket.length > 0)}
+                                type="button" onClick={e => handleSubmit(e, 'SELL')}
+                                className="btn flex-fill btn-light-danger py-2 fs-5 text-uppercase px-5 w-100"
+                              >                             {
+                                  loadingSellMarket ?
+                                    <div className="d-flex align-items-center align-content-center ">
+                                      <span className="spinner-border spinner-border-md"></span>SELL {main_currency}
+                                    </div>
+                                    : <span> SELL {main_currency} </span>
+                                }
+                              </button>
+                          }
                         </form>
                       </div>
                     </div>
@@ -920,7 +962,7 @@ setErrorBuySide(undefined)
                       href="#OpenOrder"
                       role="tab"
                     >
-                      Open Order(7)
+                      Open Order
                     </a>
                   </li>
                   <li className="nav-item">

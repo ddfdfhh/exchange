@@ -1,15 +1,13 @@
 
+import Image from "next/image";
 import Link from "next/link";
-export default function Sidebar() {
-    return <div className="sidebar py-2 py-md-2 me-0 border-end">
+export default function Sidebar(props:any) {
+    return <div className={`sidebar py-2 py-md-2 me-0 border-end ${props.show?'open':null}`}>
                 <div className="d-flex flex-column h-100">
                     {/* Logo */}
-                    <a href="index-2.html" className="mb-0 brand-icon">
-                        <span className="logo-icon">
-                            <i className="fa fa-gg-circle fs-3" />
-                        </span>
-                        <span className="logo-text">Cryptoon</span>
-                    </a>
+            <Link href="/">
+                <Image src="/logo.png" className="logo" alt="logo" width={130} height={30} />
+                     </Link> 
                     {/* Menu: main ul */}
                     <ul className="menu-list flex-grow-1 mt-4 px-1">
                         <li>

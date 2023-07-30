@@ -19,44 +19,38 @@ export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
-  }) {
-    const session = await getServerSession(authOptions);
-  if (session == null || session === undefined) { 
+}) {
+  const session = await getServerSession(authOptions);
+  if (session == null || session === undefined) {
     return redirect('/auth/login')
   }
- 
+   
+
   return (
     <html lang="en">
-     {/* <link rel="stylesheet" href="assets/plugin/datatables/dataTables.bootstrap5.min.css" />  */}
+      {/* <link rel="stylesheet" href="assets/plugin/datatables/dataTables.bootstrap5.min.css" />  */}
       <head>
         <link rel="stylesheet" href="/assets/css/cryptoon.style.min.css" />
-         {/* <link rel="stylesheet" href="/assets/plugin/jquery.steps/dist/jquery-steps.css" /> */}
-  
-
-    </head>
-   
-     
-      <body  suppressHydrationWarning={true} >
-        <div id="cryptoon-layout" className="theme-blue">
+        {/* <link rel="stylesheet" href="/assets/plugin/jquery.steps/dist/jquery-steps.css" /> */}
 
 
-            <Sidebar />
-              {/* main body area */}
-            <div className="main px-lg-4 px-md-4">
-                  
-            <NextAuthProvider>
-              <Header session={session} />
-                               {
-                                children
-                              }
-  </NextAuthProvider>
-                 
-            </div>
-        </div>
+      </head>
+
+
+      <body suppressHydrationWarning={true} >
+       
+              
+             <NextAuthProvider>
+              {
+                children
+              }
+            </NextAuthProvider>
+
+         
       </body>
-    
-       <Script  src="/assets/bundles/libscripts.bundle.js" />
-      
+
+      <Script src="/assets/bundles/libscripts.bundle.js" />
+
     </html>
   )
 }

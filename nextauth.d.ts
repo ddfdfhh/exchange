@@ -4,9 +4,12 @@ import { DefaultSession, DefaultUser } from "next-auth";
 //   admin = "admin",
 // }
 interface IUser extends DefaultUser {
-  
-   uuid: string;
-   email: string;
+  uuid: string;
+  email: string;
+  is_two_fa_enabled: any;
+  id_verified: any;
+  email_verified: any;
+  logged_in_at: any;
   accessToken: string;
   refreshToken: string;
   accessTokenExpiration: string;

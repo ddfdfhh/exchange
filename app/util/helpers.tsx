@@ -29,6 +29,9 @@ export function parseFullSymbol(fullSymbol: string) {
 export function formatNumber(v: number) {
   return new Intl.NumberFormat("en-IN").format(v);
 }
+export function formatCurrency(v: number) {
+  return new Intl.NumberFormat('en', { notation: 'compact' }).format(v);
+}
 export function formatDate(v: any) {
   return new Date(v).getDate() == new Date().getDate()
                                                 ? new Date(v).getHours() + ':' + new Date(v).getMinutes() + ':' + new Date(v).getSeconds()

@@ -37,7 +37,7 @@ export default function Identity() {
          
        }
        else if (status == 'unauthenticated') {
-         return redirect('auth/login')
+         return redirect('/auth/login')
       
        }
           

@@ -13,12 +13,12 @@ import { Ticker } from "@/app/components/ticker";
 import { filterOrder, formatDecimal, priceRule } from "@/app/util/helpers";
 import SuccessAlert from "@/app/components/success_alert";
 import ErrorAlert from "@/app/components/error_alert";
-import { useParams } from "next/navigation";
+import { useParams,useRouter } from "next/navigation";
 let ws: WebSocket;
 let authToken: string | undefined
 export default function Exchange() {
   const { status, data: session } = useSession()
-  
+   const router = useRouter();
     
   const searchParams = useParams();
   console.log('symbol',searchParams['symbol'])
@@ -119,10 +119,7 @@ export default function Exchange() {
           setUsdtBalance(0)
         })
     }
-    else if (status == 'unauthenticated') {
-      return redirect('auth/login')
-
-    }
+   
 
   }, [status, main_currency])
   useEffect(() => {
@@ -596,6 +593,10 @@ setErrorBuySide(undefined)
       }
     }
   }
+  function goToLogin() {
+    //alert()
+     router.push('/auth/login')
+  }
   return (
     <div className="body d-flex py-3 pt-4">
       <div className="container-xxl">
@@ -634,9 +635,9 @@ setErrorBuySide(undefined)
               <div className="card-body">
 
                 {/* TradingView Widget BEGIN */}
-                {/* <div className="tradingview-widget-container">
-                  <Indicator />
-                </div> */}
+                <div className="tradingview-widget-container">
+                  <Indicator coin={main_currency} />
+                </div>
                 {/* TradingView Widget END */}
               </div>
             </div>
@@ -713,20 +714,31 @@ setErrorBuySide(undefined)
                               ? <span className="text-danger m-2">{errorBuySide}</span>
                               : <span>&nbsp;</span>
                           }
-                          <button
-                            disabled={loadingBuy || (errorBuySide !== undefined && errorBuySide.length > 0)}
-                            type="button" onClick={e => handleSubmit(e, 'BUY')}
-                            className="btn flex-fill btn-light-success py-2 fs-5 text-uppercase px-5 w-100"
-                          >
-                            {
-                              loadingBuy ?
-                                <div className="d-flex align-items-center align-content-center ">
-                                  <span className="spinner-border spinner-border-md"></span>BUY {main_currency}
-                                </div>
-                                : <span> BUY {main_currency} </span>
-                            }
+                          {
+                            status == 'unauthenticated' ?
+                              <button
+                                type="button" onClick={e => goToLogin()}
+                                className="btn flex-fill btn-light-success py-2 fs-5 text-uppercase px-5 w-100"
+                              >
+                                Login Or Signup
 
-                          </button>
+                              </button>
+                              :
+                              <button
+                                disabled={loadingBuy || (errorBuySide !== undefined && errorBuySide.length > 0)}
+                                type="button" onClick={e => handleSubmit(e, 'BUY')}
+                                className="btn flex-fill btn-light-success py-2 fs-5 text-uppercase px-5 w-100"
+                              >
+                                {
+                                  loadingBuy ?
+                                    <div className="d-flex align-items-center align-content-center ">
+                                      <span className="spinner-border spinner-border-md"></span>BUY {main_currency}
+                                    </div>
+                                    : <span> BUY {main_currency} </span>
+                                }
+
+                              </button>
+                          }
                         </form>
                       </div>
                       <div className="col-lg-6">
@@ -769,18 +781,29 @@ setErrorBuySide(undefined)
                               ? <span className="text-danger m-2">{errorSellSide}</span>
                               : <span>&nbsp;</span>
                           }
-                          <button
-                            disabled={loadingSell || (errorSellSide !== undefined && errorSellSide.length > 0)}
-                            type="button" onClick={e => handleSubmit(e, 'SELL')}
-                            className="btn flex-fill btn-light-danger py-2 fs-5 text-uppercase px-5 w-100"
-                          >                             {
-                              loadingSell ?
-                                <div className="d-flex align-items-center align-content-center ">
-                                  <span className="spinner-border spinner-border-md"></span>SELL {main_currency}
-                                </div>
-                                : <span> SELL {main_currency} </span>
-                            }
-                          </button>
+                          {
+                            status == 'unauthenticated' ?
+                              <button
+                                type="button" onClick={e => goToLogin()}
+                                className="btn flex-fill btn-light-danger py-2 fs-5 text-uppercase px-5 w-100"
+                              >
+                                Login Or Signup
+
+                              </button>
+                              :
+                              <button
+                                disabled={loadingSell || (errorSellSide !== undefined && errorSellSide.length > 0)}
+                                type="button" onClick={e => handleSubmit(e, 'SELL')}
+                                className="btn flex-fill btn-light-danger py-2 fs-5 text-uppercase px-5 w-100"
+                              >                             {
+                                  loadingSell ?
+                                    <div className="d-flex align-items-center align-content-center ">
+                                      <span className="spinner-border spinner-border-md"></span>SELL {main_currency}
+                                    </div>
+                                    : <span> SELL {main_currency} </span>
+                                }
+                              </button>
+                          }
                         </form>
                       </div>
                     </div>
@@ -822,18 +845,29 @@ setErrorBuySide(undefined)
                               ? <span className="text-danger m-2">{errorBuySideMarket}</span>
                               : <span>&nbsp;</span>
                           }
-                          <button
-                            disabled={loadingBuyMarket || (errorBuySideMarket !== undefined && errorBuySideMarket.length > 0)}
-                            type="button" onClick={e => handleSubmit(e, 'BUY')}
-                            className="btn flex-fill btn-light-success py-2 fs-5 text-uppercase px-5 w-100"
-                          >                             {
-                              loadingBuyMarket ?
-                                <div className="d-flex align-items-center align-content-center ">
-                                  <span className="spinner-border spinner-border-md"></span>BUY {main_currency}
-                                </div>
-                                : <span> BUY {main_currency} </span>
-                            }
-                          </button>
+                          {
+                            status == 'unauthenticated' ?
+                              <button
+                                type="button" onClick={e => goToLogin()}
+                                className="btn flex-fill btn-light-success py-2 fs-5 text-uppercase px-5 w-100"
+                              >
+                                Login Or Signup
+
+                              </button>
+                              :
+                              <button
+                                disabled={loadingBuyMarket || (errorBuySideMarket !== undefined && errorBuySideMarket.length > 0)}
+                                type="button" onClick={e => handleSubmit(e, 'BUY')}
+                                className="btn flex-fill btn-light-success py-2 fs-5 text-uppercase px-5 w-100"
+                              >                             {
+                                  loadingBuyMarket ?
+                                    <div className="d-flex align-items-center align-content-center ">
+                                      <span className="spinner-border spinner-border-md"></span>BUY {main_currency}
+                                    </div>
+                                    : <span> BUY {main_currency} </span>
+                                }
+                              </button>
+                          }
                         </form>
                       </div>
                       <div className="col-lg-6">
@@ -871,18 +905,29 @@ setErrorBuySide(undefined)
                               ? <span className="text-danger m-2">{errorSellSideMarket}</span>
                               : <span>&nbsp;</span>
                           }
-                          <button
-                            disabled={loadingSellMarket || (errorSellSideMarket !== undefined && errorSellSideMarket.length > 0)}
-                            type="button" onClick={e => handleSubmit(e, 'SELL')}
-                            className="btn flex-fill btn-light-danger py-2 fs-5 text-uppercase px-5 w-100"
-                          >                             {
-                              loadingSellMarket ?
-                                <div className="d-flex align-items-center align-content-center ">
-                                  <span className="spinner-border spinner-border-md"></span>SELL {main_currency}
-                                </div>
-                                : <span> SELL {main_currency} </span>
-                            }
-                          </button>
+                          {
+                            status == 'unauthenticated' ?
+                              <button
+                                type="button" onClick={e => goToLogin()}
+                                className="btn flex-fill btn-light-danger py-2 fs-5 text-uppercase px-5 w-100"
+                              >
+                                Login Or Signup
+
+                              </button>
+                              :
+                              <button
+                                disabled={loadingSellMarket || (errorSellSideMarket !== undefined && errorSellSideMarket.length > 0)}
+                                type="button" onClick={e => handleSubmit(e, 'SELL')}
+                                className="btn flex-fill btn-light-danger py-2 fs-5 text-uppercase px-5 w-100"
+                              >                             {
+                                  loadingSellMarket ?
+                                    <div className="d-flex align-items-center align-content-center ">
+                                      <span className="spinner-border spinner-border-md"></span>SELL {main_currency}
+                                    </div>
+                                    : <span> SELL {main_currency} </span>
+                                }
+                              </button>
+                          }
                         </form>
                       </div>
                     </div>
@@ -926,7 +971,7 @@ setErrorBuySide(undefined)
                       href="#OpenOrder"
                       role="tab"
                     >
-                      Open Order(7)
+                      Open Order
                     </a>
                   </li>
                   <li className="nav-item">

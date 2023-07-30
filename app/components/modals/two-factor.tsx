@@ -30,9 +30,9 @@ export function TwoFactorModal(props:any) {
     }
     async function verify() {
       setBtnText('Verifying....')
-   const resp =await MakePostRequest({ otp, secret }, '2fa/verify', props.authToken)
+   const resp =await MakePostRequest({ otp, secret }, 'auth/2fa/turn-on', props.authToken)
         if (resp.data.success) { 
-            alert(resp.data.message)
+            console.log(resp.data.message)
             props.onEnabled(true)
         }
         else{
@@ -44,7 +44,7 @@ export function TwoFactorModal(props:any) {
             <div className="modal-dialog rounded-0">
                 <div className="modal-content rounded-0">
                     <div className="modal-header">
-                        <h5 className="modal-title">Two Factor Verification</h5>
+                        <h5 className="modal-title">Enabling Two Factor </h5>
                         <button
                             type="button"
                             className="btn-close"
@@ -53,16 +53,19 @@ export function TwoFactorModal(props:any) {
                         />
                     </div>
                     <div className="modal-body ">
+                         <div className="form-text">
+                            <b>1-</b> Scan the QR Code using Google Authenticator App on android 
+                        </div>
                         <div className="text-center mx-auto">
                         {
                             base64 !== undefined && <Image src={base64} alt="d" width={200} height={200} />
                         }
                         </div>
-                         <div className="form-text">
-                                    Scan the QR Code using Google Authenticator App on android 
+                          <div className="form-text">
+                            <b>2-</b> Enter The OTP shown in Google authenticator 
                         </div>
                          <div className="mb-3">
-                                <label className="form-label">Enter OTP</label>
+                               
                             <input type="text" className="form-control" value={otp} onChange={ e=>handleOtpChange(e)} />
                                
                         </div>

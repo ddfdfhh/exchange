@@ -11,8 +11,9 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (<html lang="en">
-<head>
-        <link rel="stylesheet" href="frontend/assets/css/normalize.css" />
+        <head>
+            <link rel="icon" href="/logo.png" sizes="any" />
+          <link rel="stylesheet" href="frontend/assets/css/normalize.css" />
         {/*=== Bootstrap ===*/}
         <link rel="stylesheet" href="frontend/assets/css/bootstrap.min.css" />
         {/*=== Fontawesome icon ===*/}

@@ -5,7 +5,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { init, dispose, registerIndicator, Chart, registerOverlay, KLineData } from 'klinecharts'
-import { MakeGetRequestNoQuery } from '../util/make_post_request'
+import { MakeGetRequestNoQuery, MakeGetRequestRemoteQuery, MakeGetRequestRemoteQueryNoParam } from '../util/make_post_request'
 import CandleSidebar from './candle_sidebar'
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
@@ -85,7 +85,7 @@ type Ohlv = {
 }
     let ws: any
 
-export default function Indicator() {
+export default function Indicator(props:any) {
     const [interval, setInterval] = useState('5m');
     const [wsInstance, setWsInstance] = useState<any>(null);
     const { status, data: session } = useSession()
@@ -106,8 +106,8 @@ export default function Indicator() {
         // paneId.current = chart.current?.createIndicator('VOL', false) as string
     
         // const testurl = `https://testnet.binance.vision/api/v3/klines?symbol=BTCUSDT&interval=${interval}&limit=100`
-       /* const url = `https://api.binance.com/api/v3/klines?symbol=BNBUSDT&interval=${interval}&limit=100`
-        MakeGetRequestNoQuery(url, authToken)
+        const url = `https://api.binance.com/api/v3/klines?symbol=${props.coin}USDT&interval=${interval}&limit=100`
+        MakeGetRequestRemoteQueryNoParam(url)
             .then((res: any) =>
             {
                 let res1 = res.data.map((v: any) => {
@@ -129,7 +129,7 @@ export default function Indicator() {
                             {
                                 "method": "SUBSCRIBE",
                                 "params": [
-                                    `bnbusdt@kline_${interval}`
+                                    `${(props.coin).toLowerCase()}usdt@kline_${interval}`
 
                                 ],
                                 "id": 12
@@ -171,11 +171,11 @@ export default function Indicator() {
 
         return () => {
             dispose('indicator-k-line')
-            if (ws?.readyState !== 3)
+            if (ws!==undefined && ws?.readyState !== 3)
                 ws.close(1000,'unknown')
 
 
-        }*/
+        }
     }, [interval]);
 
 
@@ -186,10 +186,7 @@ export default function Indicator() {
             console.log('token', authToken)
 
         }
-        else if (status == 'unauthenticated') {
-            return redirect('auth/login')
-
-        }
+       
 
     }, [status])
 

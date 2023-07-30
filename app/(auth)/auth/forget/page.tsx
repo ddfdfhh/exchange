@@ -7,7 +7,7 @@ export default function Forget() {
         <div className="d-flex flex-column">
           <h1>Reset Your Password</h1>
         <span className="text-muted">
-            Password Rest link will be send to you email address
+            Password Reset link will be send to you email address
                                 </span>
           <div className="tab-content mt-4 mb-3">
             <div className="tab-pane fade show active" id="Email">
@@ -22,7 +22,7 @@ export default function Forget() {
                       href="auth-two-step.html"
                       className="btn btn-primary text-uppercase py-2 fs-5 w-100 mt-2"
                     >
-                      Next
+                      Submit
                     </a>
                   </form>
                 </div>
@@ -34,17 +34,8 @@ export default function Forget() {
       </div>
       <div className="col-lg-6 d-none d-lg-flex justify-content-center align-items-center auth-h100">
         <div className="qr-block text-center">
-          <img
-            src="../assets/images/qr-code.png"
-            alt="#"
-            className="img-fluid my-4"
-          />
-          <h4>Log in with QR code</h4>
-          <p>
-            Scan this code with the{" "}
-            <span className="text-primary">Cryptoon mobile app</span>
-            <br /> to log in instantly.
-          </p>
+  <img src="/pl.png" className="img-fluid my-4" alt="login"  />
+
         </div>
       </div>
     </div>{" "}

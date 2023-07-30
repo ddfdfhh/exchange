@@ -1,12 +1,16 @@
 import axios from "axios";
 
+const base_backend_url =
+  process.env.NODE_ENV == "development"
+    ? process.env.NEXT_PUBLIC_DEV_BACKEND_URL
+    : process.env.NEXT_PUBLIC_PROD_BACKEND_URL;
 const MakePostRequest = (
   params: any,
   base_url: string,
   token: string | undefined
 ): Promise<any> => {
   if (token !== undefined) {
-    return axios.post("http://localhost:4000/" + base_url, params, {
+    return axios.post(base_backend_url+ base_url, params, {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
@@ -14,10 +18,9 @@ const MakePostRequest = (
     });
   }
   else { 
-    return axios.post("http://localhost:4000/" + base_url, params, {
+    return axios.post(base_backend_url+base_url, params, {
       headers: {
         "Content-Type": "application/json",
-        
       },
     });
   }
@@ -28,11 +31,11 @@ const MakePostRequestFormData = (
   token: string | undefined
 ): Promise<any> => {
    axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-  return axios.post("http://localhost:4000/" + base_url, params, {
+  return axios.post(base_backend_url+base_url, params, {
     headers: {
       "Content-Type": "multipart/form-data",
-      "Authorization":"Bearer "+token
-     },
+      Authorization: "Bearer " + token,
+    },
   });
 };
 const MakePostRequestUrl = (
@@ -58,20 +61,24 @@ const MakeGetRequestWithQuery = (
     qs += encodeURIComponent(key) + "=" + encodeURIComponent(value) + "&";
   }
 
-  return axios.get("http://localhost:4000/"+ base_url + "?" + qs,{
+  return axios.get(base_backend_url + base_url + "?" + qs, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
+       Authorization: "Bearer " + token,
     },
   });
 };
 const MakeGetRequestNoQuery = (url: string,token:string|undefined): Promise<any> => {
    axios.defaults.headers.common["Authorization"] = 'Bearer '+token;
-  return axios.get("http://localhost:4000/" + url);
+  return axios.get(base_backend_url + url);
 };
 const MakeGetRequestRemoteQuery = (params:any,url: string): Promise<any> => {
- //  axios.defaults.headers.common["Authorization"] = 'Bearer '+token;
+ console.log('making request')
   return axios.get(url, params);
+};
+const MakeGetRequestRemoteQueryNoParam = (url: string): Promise<any> => {
+ console.log('making request')
+  return axios.get(url);
 };
 export {
   MakePostRequest,
@@ -80,4 +87,5 @@ export {
   MakeGetRequestWithQuery,
   MakePostRequestUrl,
   MakePostRequestFormData,
+  MakeGetRequestRemoteQueryNoParam
 };

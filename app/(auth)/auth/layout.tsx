@@ -3,6 +3,7 @@
 import { NextAuthProvider } from '@/app/provider';
 import '../../globals.css'
 import Script from 'next/script'
+import Image from 'next/image';
 
 export const metadata = {
     title: 'Create Next App',
@@ -33,10 +34,10 @@ export default function RootLayout({
                             {/* header rightbar icon */}
                             <div className="row align-items-center">
                                 <div className="col">
-                                    <a href="../index-2.html" className="d-flex align-item-center">
-                                        <i className="fa fa-gg-circle fs-3" />
-                                        <h5 className="mb-0 mt-1 mx-2">Cryptoon</h5>
-                                    </a>
+                                  
+                                    <a className="d-flex align-item-center" href="/">
+                                                <Image src="/logo.png" className="logo" alt="logo" width={150} height={ 50} />
+                                            </a>
                                 </div>
                                 <div className="col-auto">
                                     <div className="d-flex align-item-center">

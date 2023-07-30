@@ -3,7 +3,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { MakeGetRequestNoQuery } from '../util/make_post_request'
+import { MakeGetRequestNoQuery, MakeGetRequestRemoteQueryNoParam } from '../util/make_post_request'
 
 
 let authToken: string | undefined
@@ -40,7 +40,7 @@ export default function OrderBook(props:any) {
 
         // const url = `https://testnet.binance.vision/api/v3/klines?symbol=BTCUSDT&interval=${interval}&limit=100`
         const url = `https://api.binance.com/api/v3/depth?limit=10&symbol=${props.coin}USDT`
-       /* MakeGetRequestNoQuery(url, authToken)
+        MakeGetRequestRemoteQueryNoParam(url)
             .then((res: any) => {
 
                 updateBid(bid => [...res['data']['bids']])
@@ -86,12 +86,12 @@ export default function OrderBook(props:any) {
 
         return () => {
 
-            if (ws?.readyState !== 3)
+            if (ws!==undefined && ws?.readyState !== 3)
                 ws.close(1000, 'unknown')
 
 
         }
-        */
+        
     }, []);
 
 

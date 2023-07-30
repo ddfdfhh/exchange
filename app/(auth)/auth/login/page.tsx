@@ -2,12 +2,17 @@
 "use client";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { getCsrfToken, signIn, useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, redirect } from "next/navigation";
 import { ChangeEvent, useRef, useState } from "react";
-
+const base_frontend_url=process.env.NODE_ENV=='development'?process.env.NEXT_PUBLIC_DEV_FRONTEND_URL:process.env.NEXT_PUBLIC_PROD_FRONTEND_URL
 export default function Login() {
-   
+    const { data: session, status } = useSession()
+    if (status === "authenticated") {
+       
+        return redirect(session?.user?.is_two_fa_enabled=='Yes'?'/auth/2fa':'/backend')
+    }
    
     const router = useRouter();
     const passwordRef=useRef(null)
@@ -32,16 +37,14 @@ export default function Login() {
                 redirect: false,
                 email: (emailRef.current as any).value,
                 password: (passwordRef.current as any).value,
-                callbackUrl: 'http://localhost:3000/backend'
+                callbackUrl: base_frontend_url+'backend'
             });
 
             setLoading(false);
 
             console.log('resp in login ',res);
-            if (!res?.error) {
-                router.push('http://localhost:3000/backend');
-            } else {
-                setError("invalid email or password");
+            if (res?.error) {
+              setError("invalid email or password");
             }
         } catch (error: any) {
             setLoading(false);
@@ -109,17 +112,11 @@ export default function Login() {
                     </div>
                     <div className="col-lg-6 d-none d-lg-flex justify-content-center align-items-center auth-h100">
                         <div className="qr-block text-center">
-                            <img
-                                src="../assets/images/qr-code.png"
-                                alt="#"
-                                className="img-fluid my-4"
-                            />
-                            <h4>Log in with QR code</h4>
-                            <p>
-                                Scan this code with the{" "}
-                                <span className="text-primary">Cryptoon mobile app</span>
-                                <br /> to log in instantly.
-                            </p>
+                           
+                            <img src="/pl.png" className="img-fluid my-4" alt="login"  />
+
+                          
+                           
                         </div>
                     </div>
                 </div>{" "}

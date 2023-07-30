@@ -2,6 +2,10 @@
 
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+const base_backend_url =
+  process.env.NODE_ENV == "development"
+    ? process.env.NEXT_PUBLIC_DEV_BACKEND_URL
+    : process.env.NEXT_PUBLIC_PROD_BACKEND_URL;
 
 
 export const authOptions:NextAuthOptions = {
@@ -25,7 +29,7 @@ export const authOptions:NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const resp = await fetch("http://localhost:4000/auth/login", {
+        const resp = await fetch(base_backend_url+"auth/login", {
           method: "POST",
           mode: "cors",
           credentials: "include",
@@ -36,7 +40,7 @@ export const authOptions:NextAuthOptions = {
         });
 
         const response: any = await resp.json();
-       
+      // console.log('see rep',response)
         if (response.success) {
           return response.data;
         } else {
@@ -55,6 +59,7 @@ export const authOptions:NextAuthOptions = {
     }
      ,
     async jwt({ token, user, account, profile, isNewUser }) {
+    
       if(user!==undefined)
         token.user = { ...token, ...user }
      

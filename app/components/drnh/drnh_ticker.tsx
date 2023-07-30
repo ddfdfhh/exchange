@@ -36,22 +36,22 @@ export function DrnhTicker(props: any) {
 
              <div className="d-flex flex-column mx-4 flex-fill">
                 <b>24h High</b>
-                <span className="">{formatDecimal(response?.last_24_hour_data?.high)}</span>
+                <span className="">{response?.last_24_hour_data?.high?formatDecimal(response?.last_24_hour_data?.high):0.0}</span>
 
             </div>
           <div className="d-flex flex-column mx-4 flex-fill">
                 <b>24h Low</b>
-                <span className="">{formatDecimal(response?.last_24_hour_data?.low)}</span>
+                <span className="">{response?.last_24_hour_data?.low?formatDecimal(response?.last_24_hour_data?.low):0.0}</span>
 
             </div>
             <div className="d-flex flex-column mx-4 flex-fill">
                 <b>24h Volume({props.mainCurrency})</b>
-                <span className="">{formatDecimal(response?.last_24_hour_data?.coin1_volume)}</span>
+                <span className="">{response?.last_24_hour_data?.coin1_volume?formatDecimal(response?.last_24_hour_data?.coin1_volume):0.0}</span>
 
             </div>
             <div className="d-flex flex-column mx-4 flex-fill">
                 <b>24h Volume(USDT)</b>
-                <span className="">{formatDecimal(response?.last_24_hour_data?.coin2_volume)}</span>
+                <span className="">{response?.last_24_hour_data?.coin2_volume?formatDecimal(response?.last_24_hour_data?.coin2_volume):0.0}</span>
 
             </div>
 

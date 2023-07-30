@@ -330,7 +330,7 @@ export default function Home() {
                                                             className="coin mx-2"
                                                             src='/assets/images/coin/DRNH.png'
                                                             alt=""
-                                                            style={{ background:'#0d1493',width: '50px', height: '50px', borderRadius: '50%', boxShadow: '1px 1px 5px 4px #cddc3987' }}
+                                                            style={{ background:'#0d1493',width: '50px', height: '50px', borderRadius: '50%' }}
                                                         />
                                                         <span>Dornish (DRNH)</span>
                                                     </div>
@@ -361,7 +361,7 @@ export default function Home() {
                                                             className="coin mx-2"
                                                             src={v['image']}
                                                             alt=""
-                                                            style={{ width: '50px', height: '50px', borderRadius: '50%', boxShadow: '1px 1px 5px 4px #cddc3987' }}
+                                                            style={{ width: '50px', height: '50px', borderRadius: '50%'}}
                                                         />
                                                         <span>{v['id']} ({v['symbol'].toUpperCase()})</span>
                                                     </div>
